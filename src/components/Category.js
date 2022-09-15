@@ -1,6 +1,6 @@
 const Category = ({category, handleCategoryClick}) => {
   return (
-    <button className="category-button" onClick={() => handleCategoryClick(category)}>{category.value}</button>
+    <button className={`category-button ${category.selected && "category-selected"}`} onClick={() => handleCategoryClick(category)}>{category.value}</button>
   )
 }
 
