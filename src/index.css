@@ -174,3 +174,24 @@ body {
   box-shadow: #3c4fe0 0 3px 7px inset;
   transform: translateY(2px);
 }
+
+.loading-text {
+  font-size: 2rem;
+  font-weight: 700;
+  animation: reveal-loading-text 3000ms;
+}
+
+@keyframes reveal-loading-text {
+  0% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
