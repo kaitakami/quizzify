@@ -7,6 +7,7 @@ const Quiz = ({ category }) => {
   const { id } = category;
   const [trivia, setTrivia] = useState([]);
   const [correctAnswers, setCorrectAnswers] = useState([]);
+  const [lastSelectedQuestion, setLastSelectedQuestion] = useState([]);
   const [answers, setAnswers] = useState([]);
 
   useEffect(() => {
@@ -34,22 +35,45 @@ const Quiz = ({ category }) => {
     }
   }, [id, trivia]);
 
-  const handleAnswerClicked = (clickedAns) => {
-    console.log(clickedAns);
+  const handleAnswerClicked = (sameQuestionAnswers, clickedAns) => {
+    // starting from 0
+    const questionNumber = answers.indexOf(sameQuestionAnswers);
+    const tempAnswers = answers;
+    tempAnswers[questionNumber].map((answer) => {
+      if (answer === clickedAns) {
+        setLastSelectedQuestion(answer);
+        answer.selected = true;
+        return null;
+      } else {
+        answer.selected = false;
+        return null;
+      }
+    });
+    setAnswers(tempAnswers);
   };
-  const renderQuestions = trivia.map((question,index) => (
-    <Question
-      key={nanoid()}
-      question={question.question}
-      answers={answers[index]}
-      handleAnswerClicked={handleAnswerClicked}
-    />
-  ));
+
+  const checkResults = () => {
+  };
+
+  const renderQuestions = () =>
+    trivia.map((question, index) => (
+      <Question
+        key={nanoid()}
+        question={question.question}
+        answers={answers[index]}
+        handleAnswerClicked={handleAnswerClicked}
+      />
+    ));
 
   return (
     <div>
       {!(trivia.length > 0) && <p className="loading-text">Loading...</p>}
-      {trivia.length > 0 ? renderQuestions : null}
+      {trivia.length > 0 ? (
+        <>
+          {answers && renderQuestions()}
+          <button onClick={checkResults}>Update</button>
+        </>
+      ) : null}
     </div>
   );
 };

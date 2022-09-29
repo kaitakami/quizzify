@@ -1,15 +1,14 @@
 import React from "react";
-import { nanoid } from "nanoid";
 
 const Question = ({ question, answers, handleAnswerClicked }) => {
-  console.log(answers);
   const renderAnswers = (allAnswers) =>
-    allAnswers.map((questionAnswers) => (
+    allAnswers.map((questionAnswer) => (
       <button
-        key={questionAnswers.id}
-        onClick={() => handleAnswerClicked(questionAnswers.id)}
+        className={`answer-button ${questionAnswer.selected ? "selected" : ""}`}
+        key={questionAnswer.id}
+        onClick={() => handleAnswerClicked(answers, questionAnswer)}
       >
-        {questionAnswers.value}
+        {questionAnswer.value}
       </button>
     ));
 
