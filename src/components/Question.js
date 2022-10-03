@@ -1,4 +1,5 @@
 import React from "react";
+import * as entities from "entities";
 
 const Question = ({ question, answers, handleAnswerClicked }) => {
   const renderAnswers = (allAnswers) =>
@@ -8,13 +9,13 @@ const Question = ({ question, answers, handleAnswerClicked }) => {
         key={questionAnswer.id}
         onClick={() => handleAnswerClicked(answers, questionAnswer)}
       >
-        {questionAnswer.value}
+        {entities.decodeHTML(questionAnswer.value)}
       </button>
     ));
 
   return (
     <div className="question">
-      <h3>{question}</h3>
+      <h3>{entities.decodeHTML(question)}</h3>
       <div className="answers">{answers && renderAnswers(answers)}</div>
     </div>
   );

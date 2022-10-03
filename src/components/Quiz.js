@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { nanoid } from "nanoid";
 import { getQuestionsAPI } from "../services/getQuestionsAPI";
 import Question from "./Question";
+import Message from "./Message";
 
 const Quiz = ({ category }) => {
   const { id } = category;
@@ -52,8 +53,7 @@ const Quiz = ({ category }) => {
     setAnswers(tempAnswers);
   };
 
-  const checkResults = () => {
-  };
+  const checkResults = () => {};
 
   const renderQuestions = () =>
     trivia.map((question, index) => (
@@ -70,6 +70,7 @@ const Quiz = ({ category }) => {
       {!(trivia.length > 0) && <p className="loading-text">Loading...</p>}
       {trivia.length > 0 ? (
         <>
+          <h1 className="title">Quizzify</h1>
           {answers && renderQuestions()}
           <button onClick={checkResults}>Update</button>
         </>
