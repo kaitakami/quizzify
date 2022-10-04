@@ -8,8 +8,9 @@ const Quiz = ({ category }) => {
   const { id } = category;
   const [trivia, setTrivia] = useState([]);
   const [correctAnswers, setCorrectAnswers] = useState([]);
-  const [lastSelectedQuestion, setLastSelectedQuestion] = useState([]);
+  const [selectedQuestion, setSelectedQuestion] = useState();
   const [answers, setAnswers] = useState([]);
+  const [errorMessage, setErrorMessage] = useState(false);
 
   useEffect(() => {
     if (trivia.length === 0) {
@@ -42,7 +43,7 @@ const Quiz = ({ category }) => {
     const tempAnswers = answers;
     tempAnswers[questionNumber].map((answer) => {
       if (answer === clickedAns) {
-        setLastSelectedQuestion(answer);
+        setSelectedQuestion(answer);
         answer.selected = true;
         return null;
       } else {
@@ -53,7 +54,35 @@ const Quiz = ({ category }) => {
     setAnswers(tempAnswers);
   };
 
-  const checkResults = () => {};
+  const checkAnswers = () => {
+    const selectedAnswers = answers
+      .map((question) =>
+        question
+          .map((answer) => {
+            if (answer.selected) {
+              return answer.value;
+            }
+            return null;
+          })
+          .filter((answer) => answer !== null)
+      )
+      .flat();
+    if (selectedAnswers.length === 5) {
+      const quizResult = correctAnswers.map(
+        (correctAnswer, index) => correctAnswer === selectedAnswers[index]
+      );
+      console.log(quizResult);
+    } else {
+      setErrorMessage(true);
+      setTimeout(() => {
+        setErrorMessage(false);
+      }, 5000);
+    }
+  };
+
+  const resetQuiz = () => {
+    console.log("reset");
+  };
 
   const renderQuestions = () =>
     trivia.map((question, index) => (
@@ -72,7 +101,15 @@ const Quiz = ({ category }) => {
         <>
           <h1 className="title">Quizzify</h1>
           {answers && renderQuestions()}
-          <button onClick={checkResults}>Update</button>
+          <button onClick={checkAnswers}>Check Answers</button>
+          <button onClick={resetQuiz}>Select Different Category</button>
+          {errorMessage && (
+            <div className="error-container">
+              <Message
+                children={"You have to choose an answer for each question"}
+              />
+            </div>
+          )}
         </>
       ) : null}
     </div>
