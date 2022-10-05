@@ -30,7 +30,7 @@ function App() {
         <Message children={"Select a category to get started"} />
       )}
       {isGameStarted ? (
-        <Quiz category={selectedCategory} />
+        <Quiz category={selectedCategory} setIsGameStarted={setIsGameStarted} />
       ) : (
         <GameStart
           handleCategoryChange={handleCategoryChange}
