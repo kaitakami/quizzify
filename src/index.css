@@ -259,8 +259,32 @@ body {
   border: none;
 }
 
+.results {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+  color: white;
+  background-image: linear-gradient(rgb(169, 169, 169), rgb(123, 123, 123));
+  border-radius: 8px;
+  padding: 1rem 0;
+  margin: 1rem 1rem 0 1rem;
+}
+
+.button-containers {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
 .error-container {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.correct-answer {
+  background-image: linear-gradient(#0dcc3d, #47b963);
+
 }

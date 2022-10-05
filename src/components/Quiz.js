@@ -1,16 +1,19 @@
 import { useState, useEffect } from "react";
 import { nanoid } from "nanoid";
+import Confetti from "react-confetti";
 import { getQuestionsAPI } from "../services/getQuestionsAPI";
 import Question from "./Question";
 import Message from "./Message";
 
-const Quiz = ({ category }) => {
+const Quiz = ({ category, setIsGameStarted }) => {
   const { id } = category;
   const [trivia, setTrivia] = useState([]);
   const [correctAnswers, setCorrectAnswers] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState();
   const [answers, setAnswers] = useState([]);
   const [errorMessage, setErrorMessage] = useState(false);
+  const [gameEnded, setGameEnded] = useState(false);
+  const [result, setResult] = useState(0);
 
   useEffect(() => {
     if (trivia.length === 0) {
@@ -54,6 +57,16 @@ const Quiz = ({ category }) => {
     setAnswers(tempAnswers);
   };
 
+  const renderQuestions = () =>
+    trivia.map((question, index) => (
+      <Question
+        key={nanoid()}
+        question={question.question}
+        answers={answers[index]}
+        handleAnswerClicked={handleAnswerClicked}
+      />
+    ));
+
   const checkAnswers = () => {
     const selectedAnswers = answers
       .map((question) =>
@@ -68,10 +81,11 @@ const Quiz = ({ category }) => {
       )
       .flat();
     if (selectedAnswers.length === 5) {
+      setGameEnded(true);
       const quizResult = correctAnswers.map(
         (correctAnswer, index) => correctAnswer === selectedAnswers[index]
       );
-      console.log(quizResult);
+      setResult(quizResult.filter((result) => result).length);
     } else {
       setErrorMessage(true);
       setTimeout(() => {
@@ -81,28 +95,44 @@ const Quiz = ({ category }) => {
   };
 
   const resetQuiz = () => {
-    console.log("reset");
+    setIsGameStarted(false);
   };
 
-  const renderQuestions = () =>
-    trivia.map((question, index) => (
-      <Question
-        key={nanoid()}
-        question={question.question}
-        answers={answers[index]}
-        handleAnswerClicked={handleAnswerClicked}
-      />
-    ));
+  const showAnswers = () => {
+    const tempAnswers = answers.map((questionAnswers, index) =>
+      questionAnswers.map((answer) => {
+        if (answer.value === correctAnswers[index]) {
+          return { ...answer, correct: true };
+        } else {
+          return { ...answer, correct: false };
+        }
+      })
+    );
+    setAnswers(tempAnswers);
+  };
 
   return (
     <div>
+      {result > 3 && <Confetti />}
       {!(trivia.length > 0) && <p className="loading-text">Loading...</p>}
       {trivia.length > 0 ? (
         <>
           <h1 className="title">Quizzify</h1>
           {answers && renderQuestions()}
-          <button onClick={checkAnswers}>Check Answers</button>
-          <button onClick={resetQuiz}>Select Different Category</button>
+          {gameEnded && <p className="results">Result: {result} / 5</p>}
+          <div className="button-containers">
+            <button className="start-button" onClick={checkAnswers}>
+              Check Answers
+            </button>
+            <button className="start-button" onClick={resetQuiz}>
+              {gameEnded ? "Reset Quiz" : "Select Different Category"}
+            </button>
+            {gameEnded && (
+              <button className="start-button" onClick={showAnswers}>
+                Show Answers
+              </button>
+            )}
+          </div>
           {errorMessage && (
             <div className="error-container">
               <Message
