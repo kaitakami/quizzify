@@ -5,7 +5,9 @@ const Question = ({ question, answers, handleAnswerClicked }) => {
   const renderAnswers = (allAnswers) =>
     allAnswers.map((questionAnswer) => (
       <button
-        className={`answer-button ${questionAnswer.selected ? "selected" : ""}`}
+        className={`answer-button ${
+          questionAnswer.selected ? "selected" : ""
+        } ${questionAnswer.correct ? "correct-answer" : ""}`}
         key={questionAnswer.id}
         onClick={() => handleAnswerClicked(answers, questionAnswer)}
       >
