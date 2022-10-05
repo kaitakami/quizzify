@@ -9,6 +9,7 @@ const Quiz = ({ category, setIsGameStarted }) => {
   const { id } = category;
   const [trivia, setTrivia] = useState([]);
   const [correctAnswers, setCorrectAnswers] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [selectedQuestion, setSelectedQuestion] = useState();
   const [answers, setAnswers] = useState([]);
   const [errorMessage, setErrorMessage] = useState(false);
